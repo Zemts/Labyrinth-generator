@@ -1,39 +1,42 @@
 
-Labyrinths generator.
+# Labyrinths generator. #
 
 
 
-What does it do :
+## What does it do : ##
     Generate structure of labyrinths (returns structure for 'comfortable' rendering).
     Used scripts are located in 'src' folder.
 
 
 
-How to use it (short description) :
-    1)  Call core.createWorkingSet(elementsGenerator, sizes [, additionalActions]);
-    2)  Call algorithms.generate(workingSet, algorithmName);
-    3)  Render result.
+## How to use it (short description) : ##
+    1.  Call core.createWorkingSet(elementsGenerator, sizes [, additionalActions]).
+    2.  Call algorithms.generate(workingSet, algorithmName).
+    3.  Render result.
 
 
 
-How to use it (more detailed description) :
-    1)  Call core.createWorkingSet(elementsGenerator, sizes [, additionalActions]) and save result into variable.
+## How to use it (more detailed description) : ##
+
+    1.  Call core.createWorkingSet(elementsGenerator, sizes [, additionalActions]) and save result into variable.
         Where
-            elementsGenerator - function that return new element (entity of cell that will be displayed in the document).
-                Example:
+            **elementsGenerator** - function that return new element (entity of cell that will be displayed in the document).
+                Example: ```javascript
                     function(){
                         return document.createElement('div');
                     }
-            sizes - object with 2 properties, rows - number of rows, columns - number of columns.
+                ```
+            **sizes** - object with 2 properties, rows - number of rows, columns - number of columns.
                 Note, 'sizes' must consist of odd numbers (because part of elements are used as 'walls').
-                Example:
+                Example: ```javascript
                     {
                         'rows' : 21,
                         'columns' : 21
                     }
-            additionalAction - object with actions that will be used like callbacks in standart methods.
+                ```
+            **additionalAction** - object with actions that will be used like callbacks in standart methods.
                 Note that at this moment only 'setPath' and 'setWall' actions are used.
-                Example:
+                Example: ```javascript
                     {
                         'setPath' : function(element){
                             element.style.backgroundColor = 'purple';
@@ -42,20 +45,22 @@ How to use it (more detailed description) :
                             element.style.backgroundColor = 'pink';
                         }
                     }
+                ```
         Return 2d array.
     
-    2)  Call algrorithms.generate(workingSet, algorithmName).
+    2.  Call algrorithms.generate(workingSet, algorithmName).
         Where
-            workingSet - object returned by executing 'core.createWorkingSet(...)'
-            algorithmName - string with name of algorithm.
+            **workingSet** - object returned by executing 'core.createWorkingSet(...)'
+            **algorithmName** - string with name of algorithm.
                 Note that at this moment only 'simple' and 'Eller' names are available.
-                Example:
+                Example: ```javascript
                     'simple'
+                ```
         Note, this function modify 'workingSet' argument !
         Return undefined.
 
-    3)  Render each element of 2d array from step 1 (Your part of code).
-            Example:
+    3.  Render each element of 2d array from step 1 (Your part of code).
+            Example: ```javascript
                 let line;
                 for(let i = 0; i < workingSet.length; i++){
                     line = createElement('div');
@@ -64,10 +69,12 @@ How to use it (more detailed description) :
                     }
                     document.body.appendChild(line);
                 }
+            ```
 
 
 
-Full example:
+## Full example: ##
+
     <html>
         <head>
             <script src='src/core.js'></script>
@@ -103,12 +110,12 @@ Full example:
 
 
 
-More colorful example:
+## More colorful example: ##
     For see it, download index.html file, 'src' and 'example' folders
 
 
 
-Browser supports (for scripts from 'src' folder):
-    IE : 9+
-    Chrome : 1+
-    Firefox : 1.5+
+## Browser supports (for scripts from 'src' folder): ##
+    1. IE : 9+
+    2. Chrome : 1+
+    3. Firefox : 1.5+
