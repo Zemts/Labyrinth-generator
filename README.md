@@ -19,72 +19,72 @@ Used scripts are located in 'src' folder.
 ## How to use it (more detailed description) : ##
 1.  Call `core.createWorkingSet(elementsGenerator, sizes [, additionalActions])` and save result into variable.
 
-    Where
+    * Arguments:
 
-    **elementsGenerator** - function that return new element (entity of cell that will be displayed in the document).
+        **elementsGenerator** - function that return new element (entity of cell that will be displayed in the document).
 
-    Example:
+        Example:
 
-    ```javascript
-    function(){
-        return document.createElement('div');
-    }
-    ```
-
-    **sizes** - object with 2 properties, rows - number of rows, columns - number of columns.
-
-    Note, 'sizes' must consist of odd numbers (because part of elements are used as 'walls').
-
-    Example:
-
-    ```javascript
-    {
-        'rows' : 21,
-        'columns' : 21
-    }
-    ```
-
-    **additionalAction** - object with actions that will be used like callbacks in standart methods.
-    
-    Note that at this moment only 'setPath' and 'setWall' actions are used.
-    
-    Example:
-
-    ```javascript
-    {
-        'setPath' : function(element){
-            element.style.backgroundColor = 'purple';
-        },
-        'setWall' : function(element){
-            element.style.backgroundColor = 'pink';
+        ```javascript
+        function(){
+            return document.createElement('div');
         }
-    }
-    ```
+        ```
 
-    Return 2d array.
+        **sizes** - object with 2 properties, rows - number of rows, columns - number of columns.
 
-2.  Call algrorithms.generate(workingSet, algorithmName).
-    
-    Where
-    
-    **workingSet** - object returned by executing core.createWorkingSet(...)
-    
-    **algorithmName** - string with name of algorithm.
-    
-    Note that at this moment only 'simple' and 'Eller' names are available.
-    
-    Example:
-    
-    ```javascript
-    'simple'
-    ```
+        Note, 'sizes' must consist of odd numbers (because part of elements are used as 'walls').
 
-    Note, this function modify 'workingSet' argument !
+        Example:
+
+        ```javascript
+        {
+            'rows' : 21,
+            'columns' : 21
+        }
+        ```
+
+        **additionalAction** - object with actions that will be used like callbacks in standart methods.
+        
+        Note that at this moment only 'setPath' and 'setWall' actions are used.
+        
+        Example:
+
+        ```javascript
+        {
+            'setPath' : function(element){
+                element.style.backgroundColor = 'purple';
+            },
+            'setWall' : function(element){
+                element.style.backgroundColor = 'pink';
+            }
+        }
+        ```
+
+    * Return value: 2d array.
+
+2.  Call `algrorithms.generate(workingSet, algorithmName)`.
     
-    Return undefined.
+    * Arguments:
+
+        **workingSet** - object returned by executing core.createWorkingSet(...)
+
+        **algorithmName** - string with name of algorithm.
+
+        Note that at this moment only 'simple' and 'Eller' names are available.
+
+        Example:
+
+        ```javascript
+        'simple'
+        ```
+
+    * Warning: this function modify 'workingSet' argument !
+
+    * Return value: undefined.
 
 3.  Render each element of 2d array from step 1 (Your part of code).
-    
+
     Example:
     
     ```javascript
