@@ -19,84 +19,75 @@ Used scripts are located in 'src' folder.
 ## How to use it (more detailed description) : ##
 1.  Call `core.createWorkingSet(elementsGenerator, sizes [, additionalActions])` and save result into variable.
 
-    * Arguments:
+    * **Arguments**:
 
-        **elementsGenerator** - function that return new element (entity of cell that will be displayed in the document).
+        *elementsGenerator* - function that return new element (entity of cell that will be displayed in the document).
 
-        Example:
-
-        ```javascript
-        function(){
-            return document.createElement('div');
-        }
-        ```
-
-        **sizes** - object with 2 properties, rows - number of rows, columns - number of columns.
+        *sizes* - object with 2 properties, rows - number of rows, columns - number of columns.
 
         Note, 'sizes' must consist of odd numbers (because part of elements are used as 'walls').
 
-        Example:
-
-        ```javascript
-        {
-            'rows' : 21,
-            'columns' : 21
-        }
-        ```
-
-        **additionalAction** - object with actions that will be used like callbacks in standart methods.
+        *additionalAction* - object with actions that will be used like callbacks in standart methods.
         
         Note that at this moment only 'setPath' and 'setWall' actions are used.
+
+    * **Return**: 2d array.
+
+    * **Example**:
         
-        Example:
-
         ```javascript
-        {
-            'setPath' : function(element){
-                element.style.backgroundColor = 'purple';
+        var workingSet = core.createWorkingSet(
+            function(){
+                return document.createElement('div');
             },
-            'setWall' : function(element){
-                element.style.backgroundColor = 'pink';
+            {
+                'rows' : 21,
+                'columns' : 21
+            },
+            {
+                'setPath' : function(element){
+                    element.style.backgroundColor = 'purple';
+                },
+                'setWall' : function(element){
+                    element.style.backgroundColor = 'pink';
+                }
             }
-        }
         ```
-
-    * Return value: 2d array.
 
 2.  Call `algrorithms.generate(workingSet, algorithmName)`.
     
-    * Arguments:
+    * **Arguments**:
 
-        **workingSet** - object returned by executing core.createWorkingSet(...)
+        *workingSet* - object returned by executing core.createWorkingSet(...)
 
-        **algorithmName** - string with name of algorithm.
+        *algorithmName* - string with name of algorithm.
 
         Note that at this moment only 'simple' and 'Eller' names are available.
 
-        Example:
+    * **Warning**: this function modify 'workingSet' argument !
+
+    * **Return**: undefined.
+
+    * **Example**:
 
         ```javascript
-        'simple'
+        algorithms.generate(workingSet, 'Eller');
         ```
-
-    * Warning: this function modify 'workingSet' argument !
-
-    * Return value: undefined.
 
 3.  Render each element of 2d array from step 1 (Your part of code).
 
-    Example:
+    * Example:
     
-    ```javascript
-    let line;
-    for(let i = 0; i < workingSet.length; i++){
-        line = createElement('div');
-        for(let j = 0; j < workingSet[i].length; j++){
-            line.appendChild(workingSet[i][j].element);  // .element - result of 'elementsGenerator' function
+        ```javascript
+        let line;
+        for(let i = 0; i < workingSet.length; i++){
+            line = createElement('div');
+            for(let j = 0; j < workingSet[i].length; j++){
+                line.appendChild(workingSet[i][j].element);  // .element - result of 'elementsGenerator' function
+            }
+            document.body.appendChild(line);
         }
-        document.body.appendChild(line);
-    }
-    ```
+        ```
 
 
 
