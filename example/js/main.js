@@ -114,20 +114,25 @@ var main = (function(){
             });
         });
         // for window object
-        var upRoundedMod = Math.floor(Math.min(window.innerHeight, window.innerWidth) / STEP) + 1;
-	    var isPortrait = window.innerHeight >= window.innerWidth;
+        var intervalID = null;
+        var h = window.innerHeight;
+        var w = window.innerWidth;
         window.addEventListener('resize', function(){
-            var isPortraitCheck = window.innerHeight >= window.innerWidth;
-            if(isPortrait !== isPortraitCheck){
-                isPortrait = isPortraitCheck;
-                window.main.dirtyCSS();
-                return;
-            }
-            var upRoundedModCheck = Math.floor(Math.min(window.innerHeight, window.innerWidth) / STEP) + 1;
-            if(upRoundedModCheck !== upRoundedMod){
-                upRoundedMod = upRoundedModCheck;
-                window.main.dirtyCSS();
-                return;
+            if(intervalID === null){
+                intervalID = setInterval(function(){
+                    if(window.innerHeight === h && window.innerWidth === w){
+                        clearInterval(intervalID);
+                        intervalID = null;
+                        window.main.dirtyCSS(
+                            window.main.workspace,
+                            window.main.getLastRenderedSettings()
+                        );
+                    }
+                    else {
+                        h = window.innerHeight;
+                        w = window.innerWidth;
+                    }
+                }, 200);
             }
         });
         
@@ -174,6 +179,8 @@ var main = (function(){
 
     // stuff for functional demonstration
     var example = (function(){
+        // object with last settings for rendering labyrinth
+        var lastSettings;
         // object with 'rendering actions' for labyrinth
         var labyrinthActions = {
             'leave' : function(domElement){
@@ -324,17 +331,18 @@ var main = (function(){
                 throw new Error("Module 'core' was loaded incorrectly.")
             }
 
-            var settings = reduceSettings(values);
+            //var settings = reduceSettings(values);
             var workingSet = core.getWorkingSet();
-            dirtyCSS(html.workspace, settings);
+            lastSettings = reduceSettings(values);
+            dirtyCSS(html.workspace, lastSettings);
             // same sizes of labyrinth
-            if(settings.height === workingSet.length && settings.width === workingSet[0].length){
+            if(lastSettings.height === workingSet.length && lastSettings.width === workingSet[0].length){
                 core.resetWorkingSet();
                 core.setStart();
                 core.setFinish();
                 algorithms.generate(
                     workingSet,
-                    settings.algorithm
+                    lastSettings.algorithm
                 );
             }
             // new sizes of labyrinth
@@ -343,16 +351,16 @@ var main = (function(){
                 core.dropWorkingSet();
                 workingSet = core.createWorkingSet(
                     html.workspace.getNewCell,
-                    { 'rows' : settings.height, 'columns' : settings.width }, 
+                    { 'rows' : lastSettings.height, 'columns' : lastSettings.width }, 
                     labyrinthActions
                 );
                 core.setStart();
                 core.setFinish();
                 algorithms.generate(
                     workingSet,
-                    settings.algorithm
+                    lastSettings.algorithm
                 );
-                fillContainer(workingSet, html.workspace, settings)
+                fillContainer(workingSet, html.workspace, lastSettings)
                     .then(function(resolve){
                         //alert('done');
                     })
@@ -361,10 +369,14 @@ var main = (function(){
                     });
             }
         };
+        var getLastSettings = function(){
+            return lastSettings;
+        }
 
         return {
             'dirtyCSS' : dirtyCSS,
-            'generate' : generate
+            'generate' : generate,
+            'getLastSettings' : getLastSettings
         };
 
     })();
@@ -372,7 +384,9 @@ var main = (function(){
     return {
         'dirtyCSS' : example.dirtyCSS,
         'generate' : example.generate,
-        'generateButton' : html.userSettings.generateButton
+        'generateButton' : html.userSettings.generateButton,
+        'getLastRenderedSettings' : example.getLastSettings,
+        'workspace' : html.workspace
     };
 
 })();
