@@ -76,7 +76,7 @@ Used scripts are located in 'src' folder.
 
 3.  Render each element of 2d array from step 1 (Your part of code).
 
-    * Example:
+    * **Example**:
     
         ```javascript
         let line;
@@ -131,11 +131,11 @@ Used scripts are located in 'src' folder.
 
 
 ## More colorful example: ##
-For see it, download index.html file, 'src' and 'example' folders
+[Colorful example](https://zemts.github.io/projects/labyrinths/index.html)
 
 
 
-## Browser supports (for scripts from 'src' folder): ##
+## Browser supports (for scripts from 'src' folder only!): ##
 1.  IE : 9+
 2.  Chrome : 1+
 3.  Firefox : 1.5+
